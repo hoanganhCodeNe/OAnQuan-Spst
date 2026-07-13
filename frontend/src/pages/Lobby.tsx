@@ -127,10 +127,6 @@ export const Lobby: React.FC = () => {
             to="/leaderboard"
             className="px-4 py-2 border border-history-gold/30 hover:border-history-gold bg-black/30 hover:bg-history-gold/10 text-history-gold-light hover:text-history-gold-bright text-xs sm:text-sm font-bold font-montserrat rounded flex items-center gap-1.5 transition-all"
           >
-          <Link
-            to="/leaderboard"
-            className="px-4 py-2 border border-history-gold/30 hover:border-history-gold bg-black/30 hover:bg-history-gold/10 text-history-gold-light hover:text-history-gold-bright text-xs sm:text-sm font-bold font-montserrat rounded flex items-center gap-1.5 transition-all"
-          >
             <Trophy className="h-4 w-4" />
             Xếp hạng
           </Link>
