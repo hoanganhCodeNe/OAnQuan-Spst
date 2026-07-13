@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, ArrowLeft, Loader, CheckCircle, Lock, Quote } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { Material } from '../routes/materials';
+import { Material } from '../types/game';
 
 export const StudyDocs: React.FC = () => {
   const { user, apiUrl } = useAuth();

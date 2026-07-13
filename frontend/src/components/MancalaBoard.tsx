@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowRight, User } from 'lucide-react';
-import { Hole } from '../services/gameEngine';
+import { Hole } from '../types/game';
 
 interface MancalaBoardProps {
   board: Hole[];

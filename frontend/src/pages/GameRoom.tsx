@@ -7,7 +7,7 @@ import { useSocket } from '../context/SocketContext';
 import { MancalaBoard } from '../components/MancalaBoard';
 import { ChatPanel } from '../components/ChatPanel';
 import { QuestionModal } from '../components/QuestionModal';
-import { Hole } from '../services/gameEngine';
+import { Hole } from '../types/game';
 import confetti from 'canvas-confetti';
 
 interface Player {
