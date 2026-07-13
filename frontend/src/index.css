@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-history-charcoal-pure text-white overflow-x-hidden;
+    background-image: 
+      radial-gradient(circle at 50% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 60%),
+      radial-gradient(circle at 10% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-history-charcoal-pure;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-history-gold-dark/50 rounded-full hover:bg-history-gold;
+  }
+}
+
+/* Shiny Gold Border utility */
+.gold-border {
+  border: 1px solid;
+  border-image: linear-gradient(to right, #B78727, #FFD700, #D4AF37, #B78727) 1;
+}
+
+.gold-gradient-text {
+  @apply bg-gradient-to-r from-history-gold-light via-history-gold-bright to-history-gold-dark bg-clip-text text-transparent;
+}
+
+.gold-btn {
+  @apply px-6 py-2.5 bg-gradient-to-r from-history-gold-dark via-history-gold to-history-gold-dark hover:from-history-gold hover:to-history-gold text-history-charcoal-pure font-bold font-montserrat uppercase rounded shadow-lg shadow-history-gold/20 hover:shadow-history-gold/40 transition-all duration-300 transform active:scale-95;
+}
+
+.red-btn {
+  @apply px-6 py-2.5 bg-gradient-to-r from-history-red-dark to-history-red hover:from-history-red hover:to-history-red-light text-white font-bold font-montserrat uppercase rounded shadow-lg shadow-history-red/20 hover:shadow-history-red/40 transition-all duration-300 transform active:scale-95 border border-history-gold/30;
+}
+
+/* Stone sowing keyframes and animations */
+@keyframes sow-stone {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4) translateY(-10px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-sow {
+  animation: sow-stone 0.5s ease-in-out;
+}
+
+/* Glow animations */
+@keyframes gold-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+  }
+}
+
+.pulse-gold {
+  animation: gold-pulse 2s infinite;
+}
+
+/* Background Dong Son Drum Overlay Style */
+.dong-son-bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vmin;
+  height: 90vmin;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Ccircle cx='250' cy='250' r='240' fill='none' stroke='%23FFD700' stroke-width='2'/%3E%3Ccircle cx='250' cy='250' r='210' fill='none' stroke='%23FFD700' stroke-width='1.5' stroke-dasharray='10, 5'/%3E%3Ccircle cx='250' cy='250' r='180' fill='none' stroke='%23FFD700' stroke-width='1'/%3E%3Ccircle cx='250' cy='250' r='150' fill='none' stroke='%23FFD700' stroke-width='1.5'/%3E%3Ccircle cx='250' cy='250' r='100' fill='none' stroke='%23FFD700' stroke-width='2'/%3E%3Ccircle cx='250' cy='250' r='60' fill='none' stroke='%23FFD700' stroke-width='1'/%3E%3Cpath d='M250 210 L250 290 M210 250 L290 250 M222 222 L278 278 M222 278 L278 222' stroke='%23FFD700' stroke-width='1.5'/%3E%3Ccircle cx='250' cy='250' r='25' fill='none' stroke='%23FFD700' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
