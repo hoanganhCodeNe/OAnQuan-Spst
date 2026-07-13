@@ -5,7 +5,7 @@ import { Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Login: React.FC = () => {
-  const { login, apiUrl } = useAuth();
+  const { login, apiUrl, playAsGuest } = useAuth();
   const navigate = useNavigate();
   
   const [email, setEmail] = useState('');
@@ -125,6 +125,20 @@ export const Login: React.FC = () => {
             )}
           </button>
         </form>
+
+        {/* Play as Guest Button */}
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => {
+              playAsGuest();
+              navigate('/');
+            }}
+            className="w-full py-2.5 border border-history-gold/30 hover:border-history-gold/60 bg-black/20 hover:bg-history-gold/10 text-history-gold-light hover:text-history-gold-bright text-xs sm:text-sm font-bold font-montserrat rounded flex items-center justify-center gap-1.5 transition-all"
+          >
+            Chơi Thử (Không cần tài khoản)
+          </button>
+        </div>
 
         {/* Register Redirect */}
         <div className="mt-6 text-center text-xs sm:text-sm text-gray-500 border-t border-history-gold/10 pt-4 font-montserrat">

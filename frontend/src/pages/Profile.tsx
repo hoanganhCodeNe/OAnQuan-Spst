@@ -45,6 +45,21 @@ export const Profile: React.FC = () => {
     const loadProfileData = async () => {
       try {
         setLoading(true);
+
+        if (user && user.id === '11111111-1111-1111-1111-111111111111') {
+          // Guest User mock profile data bypass
+          setMatches([]);
+          const achRes = await fetch(`${apiUrl}/api/leaderboard/achievements-list`);
+          const achData = await achRes.json();
+          if (achRes.ok) {
+            setAllAchievements(achData);
+          } else {
+            setError('Không thể tải thông tin hồ sơ.');
+          }
+          setLoading(false);
+          return;
+        }
+
         // Refresh User profile in context to get updated score & achievements
         await refreshUser();
 

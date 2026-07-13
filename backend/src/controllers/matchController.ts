@@ -42,30 +42,37 @@ export const saveMatchResult = async (matchData: {
 }) => {
   const { player1Id, player2Id, player1Name, player2Name, winnerId, winnerName, mode, p1Score, p2Score } = matchData;
 
+  const guestUUID = '11111111-1111-1111-1111-111111111111';
+  const p1DbId = player1Id === guestUUID ? null : player1Id;
+  const p2DbId = player2Id === guestUUID ? null : player2Id;
+  const winnerDbId = winnerId === guestUUID ? null : winnerId;
+
   try {
     // 1. Insert Match into DB
     const matchId = crypto.randomUUID();
     await query(
       `INSERT INTO matches (id, player1_id, player2_id, player1_name, player2_name, winner_id, winner_name, mode, p1_score, p2_score)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-      [matchId, player1Id, player2Id, player1Name, player2Name, winnerId, winnerName, mode, p1Score, p2Score]
+      [matchId, p1DbId, p2DbId, player1Name, player2Name, winnerDbId, winnerName, mode, p1Score, p2Score]
     );
 
     // 2. Update user(s) total score
-    // Player 1
-    await query(
-      'UPDATE users SET total_score = total_score + $1 WHERE id = $2',
-      [p1Score, player1Id]
-    );
-    await checkAndAwardAchievements(player1Id, mode, winnerId === player1Id);
-
-    // Player 2 (if real player)
-    if (player2Id && player2Id !== '00000000-0000-0000-0000-000000000000') {
+    // Player 1 (if real player)
+    if (p1DbId) {
       await query(
         'UPDATE users SET total_score = total_score + $1 WHERE id = $2',
-        [p2Score, player2Id]
+        [p1Score, p1DbId]
       );
-      await checkAndAwardAchievements(player2Id, mode, winnerId === player2Id);
+      await checkAndAwardAchievements(p1DbId, mode, winnerId === player1Id);
+    }
+
+    // Player 2 (if real player and not guest/bot)
+    if (p2DbId && p2DbId !== '00000000-0000-0000-0000-000000000000') {
+      await query(
+        'UPDATE users SET total_score = total_score + $1 WHERE id = $2',
+        [p2Score, p2DbId]
+      );
+      await checkAndAwardAchievements(p2DbId, mode, winnerId === player2Id);
     }
   } catch (err) {
     console.error('Error saving match result:', err);

@@ -203,9 +203,9 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
                     onClick={() => handleHoleClick(index)}
                     className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 relative shadow-inner transition-all duration-300 overflow-hidden ${
                       isInteractable 
-                        ? 'border-history-gold/45 cursor-pointer hover:bg-history-gold/10 hover:shadow-[0_0_10px_rgba(212,175,55,0.2)]' 
-                        : 'border-history-gold/10'
-                    } ${isSelected ? 'border-history-gold shadow-gold-glow bg-history-gold/10' : ''}`}
+                        ? 'border-history-gold/60 cursor-pointer hover:bg-history-gold/20 hover:shadow-gold-glow hover:scale-105 shadow-md shadow-history-gold/10' 
+                        : 'border-history-gold/15'
+                    } ${isSelected ? 'border-history-gold shadow-gold-glow bg-history-gold/15' : ''}`}
                   >
                     {/* Chapter indicator hover label */}
                     <span className="text-[8px] sm:text-[10px] text-gray-400 font-medium tracking-tight px-1 text-center font-montserrat truncate w-full">
@@ -265,9 +265,9 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
                     onClick={() => handleHoleClick(index)}
                     className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 relative shadow-inner transition-all duration-300 overflow-hidden ${
                       isInteractable 
-                        ? 'border-history-gold/45 cursor-pointer hover:bg-history-gold/10 hover:shadow-[0_0_10px_rgba(212,175,55,0.2)]' 
-                        : 'border-history-gold/10'
-                    } ${isSelected ? 'border-history-gold shadow-gold-glow bg-history-gold/10' : ''}`}
+                        ? 'border-history-gold/60 cursor-pointer hover:bg-history-gold/20 hover:shadow-gold-glow hover:scale-105 shadow-md shadow-history-gold/10' 
+                        : 'border-history-gold/15'
+                    } ${isSelected ? 'border-history-gold shadow-gold-glow bg-history-gold/15' : ''}`}
                   >
                     {/* Chapter indicator hover label */}
                     <span className="text-[8px] sm:text-[10px] text-gray-400 font-medium tracking-tight px-1 text-center font-montserrat truncate w-full">

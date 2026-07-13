@@ -26,6 +26,7 @@ interface AuthContextType {
   logout: () => void;
   refreshUser: () => Promise<void>;
   apiUrl: string;
+  playAsGuest: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,6 +39,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async (currentToken: string) => {
+    if (currentToken === 'guest-token') {
+      setUser({
+        id: '11111111-1111-1111-1111-111111111111',
+        name: 'Khách',
+        email: 'guest@guest.com',
+        totalScore: 0,
+        avatar: 'default',
+        createdAt: new Date().toISOString(),
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch(`${VITE_API_URL}/api/auth/me`, {
         headers: {
@@ -79,6 +93,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(userData);
   };
 
+  const playAsGuest = () => {
+    const guestUser: User = {
+      id: '11111111-1111-1111-1111-111111111111',
+      name: 'Khách',
+      email: 'guest@guest.com',
+      totalScore: 0,
+      avatar: 'default',
+      createdAt: new Date().toISOString(),
+    };
+    localStorage.setItem('token', 'guest-token');
+    setToken('guest-token');
+    setUser(guestUser);
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
@@ -86,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshUser = async () => {
-    if (token) {
+    if (token && token !== 'guest-token') {
       await fetchProfile(token);
     }
   };
@@ -101,6 +129,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         registerUser,
         logout,
         refreshUser,
+        playAsGuest,
         apiUrl: VITE_API_URL,
       }}
     >

@@ -9,27 +9,27 @@ export default {
       colors: {
         history: {
           red: {
-            light: '#DC2626',
-            DEFAULT: '#8B0000',
-            dark: '#660000',
-            deep: '#4A0000',
+            light: '#EF4444',
+            DEFAULT: '#B91C1C',
+            dark: '#991B1B',
+            deep: '#7F1D1D',
           },
           gold: {
             light: '#FBBF24',
-            DEFAULT: '#D4AF37',
-            dark: '#B78727',
-            bright: '#FFD700',
+            DEFAULT: '#F59E0B',
+            dark: '#D97706',
+            bright: '#FACC15',
           },
           bronze: {
-            light: '#A37E58',
-            DEFAULT: '#8C6239',
-            dark: '#5C3E21',
+            light: '#B48A63',
+            DEFAULT: '#9C7249',
+            dark: '#6E4E2F',
           },
           charcoal: {
-            light: '#2E2E30',
-            DEFAULT: '#1C1C1E',
-            dark: '#121214',
-            pure: '#0B0B0C',
+            light: '#2D2F3B',
+            DEFAULT: '#1C1D24',
+            dark: '#14151B',
+            pure: '#0C0D12',
           }
         }
       },
