@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 
 export const Lobby: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, refreshUser } = useAuth();
   const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
 
@@ -17,6 +17,11 @@ export const Lobby: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'modes' | 'guide'>('modes');
 
   const isGuest = user?.id === '11111111-1111-1111-1111-111111111111';
+
+  // Refresh user data (score, achievements) whenever returning to the Lobby
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   // Setup socket listeners for room setup
   useEffect(() => {

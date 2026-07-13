@@ -43,9 +43,11 @@ export const saveMatchResult = async (matchData: {
   const { player1Id, player2Id, player1Name, player2Name, winnerId, winnerName, mode, p1Score, p2Score } = matchData;
 
   const guestUUID = '11111111-1111-1111-1111-111111111111';
-  const p1DbId = player1Id === guestUUID ? null : player1Id;
-  const p2DbId = player2Id === guestUUID ? null : player2Id;
-  const winnerDbId = winnerId === guestUUID ? null : winnerId;
+  const botUUID = '00000000-0000-0000-0000-000000000000';
+  
+  const p1DbId = (player1Id === guestUUID || player1Id === botUUID) ? null : player1Id;
+  const p2DbId = (player2Id === guestUUID || player2Id === botUUID) ? null : player2Id;
+  const winnerDbId = (winnerId === guestUUID || winnerId === botUUID) ? null : winnerId;
 
   try {
     // 1. Insert Match into DB

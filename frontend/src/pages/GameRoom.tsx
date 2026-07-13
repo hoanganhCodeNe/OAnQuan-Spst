@@ -76,7 +76,7 @@ interface ChatMessage {
 
 export const GameRoom: React.FC = () => {
   const { roomCode } = useParams<{ roomCode: string }>();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
 
@@ -152,6 +152,7 @@ export const GameRoom: React.FC = () => {
     // Match finished and winner celebration
     socket.on('match_finished', (data: { winnerName: string | null; winnerId: string | null; gameState: MatchState }) => {
       setGameState(data.gameState);
+      refreshUser();
       
       // Fire celebration confetti if local user won
       if (data.winnerId === user?.id) {
