@@ -1,8 +1,5 @@
 -- DDL for "Hành Trình Độc Lập - Ô Ăn Quan Lịch Sử Đảng"
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Drop tables if they exist
 DROP TABLE IF EXISTS user_achievements CASCADE;
 DROP TABLE IF EXISTS achievements CASCADE;
@@ -12,7 +9,7 @@ DROP TABLE IF EXISTS users CASCADE;
 
 -- Users Table
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -53,7 +50,7 @@ CREATE TABLE user_achievements (
 
 -- Matches Table
 CREATE TABLE matches (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY,
     player1_id UUID REFERENCES users(id) ON DELETE SET NULL,
     player2_id UUID REFERENCES users(id) ON DELETE SET NULL,
     player1_name VARCHAR(100) NOT NULL,

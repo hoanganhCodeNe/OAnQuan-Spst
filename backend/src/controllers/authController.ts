@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { query } from '../config/db';
 import { AuthRequest } from '../middleware/auth';
 
@@ -25,9 +26,10 @@ export const register = async (req: AuthRequest, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Insert user
+    const userId = crypto.randomUUID();
     const insertUser = await query(
-      'INSERT INTO users (name, email, password, total_score, avatar) VALUES ($1, $2, $3, 0, $4) RETURNING id, name, email, total_score, avatar, created_at',
-      [name, email, hashedPassword, 'default']
+      'INSERT INTO users (id, name, email, password, total_score, avatar) VALUES ($1, $2, $3, $4, 0, $5) RETURNING id, name, email, total_score, avatar, created_at',
+      [userId, name, email, hashedPassword, 'default']
     );
 
     const user = insertUser.rows[0];

@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { query } from '../config/db';
 import { AuthRequest } from '../middleware/auth';
+import crypto from 'crypto';
 
 export const getUserMatches = async (req: AuthRequest, res: Response) => {
   if (!req.user) {
@@ -43,10 +44,11 @@ export const saveMatchResult = async (matchData: {
 
   try {
     // 1. Insert Match into DB
+    const matchId = crypto.randomUUID();
     await query(
-      `INSERT INTO matches (player1_id, player2_id, player1_name, player2_name, winner_id, winner_name, mode, p1_score, p2_score)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [player1Id, player2Id, player1Name, player2Name, winnerId, winnerName, mode, p1Score, p2Score]
+      `INSERT INTO matches (id, player1_id, player2_id, player1_name, player2_name, winner_id, winner_name, mode, p1_score, p2_score)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [matchId, player1Id, player2Id, player1Name, player2Name, winnerId, winnerName, mode, p1Score, p2Score]
     );
 
     // 2. Update user(s) total score
