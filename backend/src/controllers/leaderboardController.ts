@@ -16,8 +16,8 @@ export const getLeaderboards = async (req: Request, res: Response) => {
       `SELECT u.id, u.name, u.avatar, COUNT(m.id) as "wins"
        FROM users u
        JOIN matches m ON u.id = m.winner_id
-       GROUP BY u.id
-       ORDER BY wins DESC, u.name ASC
+       GROUP BY u.id, u.name, u.avatar
+       ORDER BY COUNT(m.id) DESC, u.name ASC
        LIMIT 10`
     );
 
@@ -26,8 +26,8 @@ export const getLeaderboards = async (req: Request, res: Response) => {
       `SELECT u.id, u.name, u.avatar, COUNT(ua.achievement_id) as "achievementsCount"
        FROM users u
        LEFT JOIN user_achievements ua ON u.id = ua.user_id
-       GROUP BY u.id
-       ORDER BY achievementsCount DESC, u.name ASC
+       GROUP BY u.id, u.name, u.avatar
+       ORDER BY COUNT(ua.achievement_id) DESC, u.name ASC
        LIMIT 10`
     );
 
