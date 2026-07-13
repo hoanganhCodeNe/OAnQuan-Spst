@@ -178,7 +178,7 @@ export const setupGameSockets = (io: Server) => {
 
       // Handle Game finished
       if (match.state.status === 'finished') {
-        await finalizeMatch(upperCode, match, room);
+        await finalizeMatch(io, upperCode, match, room);
       }
     });
 
@@ -222,7 +222,7 @@ export const setupGameSockets = (io: Server) => {
 
       // Save match if finished
       if (match.state.status === 'finished') {
-        await finalizeMatch(upperCode, match, room);
+        await finalizeMatch(io, upperCode, match, room);
       }
     });
 
@@ -314,7 +314,7 @@ export const setupGameSockets = (io: Server) => {
                     activeMatch.state.winnerName = currentRoom.host.name;
                   }
 
-                  finalizeMatch(roomCode, activeMatch, currentRoom);
+                  finalizeMatch(io, roomCode, activeMatch, currentRoom);
                 }
 
                 rooms.delete(roomCode);
@@ -381,7 +381,7 @@ const getWrongOption = (correct: string): string => {
 };
 
 // Helper: Save Finished Match results to Postgres and broadcast to players
-const finalizeMatch = async (roomCode: string, match: MatchEngine, room: Room) => {
+const finalizeMatch = async (io: Server, roomCode: string, match: MatchEngine, room: Room) => {
   console.log(`Finalizing match for room ${roomCode}`);
   
   // Save match in DB asynchronously
