@@ -35,7 +35,7 @@ export const Leaderboards: React.FC = () => {
           setWinsLeaderboard(data.winsLeaderboard);
           setAchievementsLeaderboard(data.achievementsLeaderboard);
         } else {
-          setError('Không thể tải dữ liệu xếp hạng.');
+          setError(data.error || data.message || 'Không thể tải dữ liệu xếp hạng.');
         }
       } catch (err) {
         console.error(err);

@@ -42,9 +42,12 @@ export const getLeaderboards = async (req: Request, res: Response) => {
         achievementsCount: parseInt(row.achievementsCount, 10)
       }))
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error fetching leaderboards:', err);
-    res.status(500).json({ message: 'Có lỗi xảy ra khi lấy bảng xếp hạng.' });
+    res.status(500).json({ 
+      message: 'Có lỗi xảy ra khi lấy bảng xếp hạng.', 
+      error: err.message || err.toString()
+    });
   }
 };
 
