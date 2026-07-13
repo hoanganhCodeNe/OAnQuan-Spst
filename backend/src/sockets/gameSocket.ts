@@ -245,7 +245,7 @@ export const setupGameSockets = (io: Server) => {
       const room = rooms.get(upperCode);
       const match = activeMatches.get(upperCode);
 
-      if (room && match) {
+      if (room) {
         // Update socket ID mapping
         if (room.host.id === userId) {
           room.host.socketId = socket.id;
@@ -256,7 +256,7 @@ export const setupGameSockets = (io: Server) => {
         playerSocketMap.set(socket.id, { roomCode: upperCode, playerId: userId });
         socket.join(upperCode);
 
-        socket.emit('reconnect_success', { room, gameState: match.state });
+        socket.emit('reconnect_success', { room, gameState: match ? match.state : null });
         io.to(upperCode).emit('chat_received', {
           sender: 'Hệ thống',
           message: `${room.host.id === userId ? room.host.name : room.guest?.name} đã kết nối lại.`,
