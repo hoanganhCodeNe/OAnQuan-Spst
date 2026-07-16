@@ -105,14 +105,26 @@ export const GameRoom: React.FC = () => {
     // Room joined update (in lobby)
     socket.on('room_joined', (data: { room: Room }) => {
       setRoom(data.room);
-      setChatMessages((prev) => [
-        ...prev,
-        {
-          sender: 'Hệ thống',
-          message: `${data.room.guest?.name} đã tham gia sảnh chờ.`,
-          timestamp: Date.now(),
-        },
-      ]);
+      const guest = data.room.guest;
+      if (guest) {
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            sender: 'Hệ thống',
+            message: `${guest.name} đã tham gia sảnh chờ.`,
+            timestamp: Date.now(),
+          },
+        ]);
+      } else {
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            sender: 'Hệ thống',
+            message: 'Thách đấu đã rời sảnh chờ.',
+            timestamp: Date.now(),
+          },
+        ]);
+      }
     });
 
     // Game initial and update states

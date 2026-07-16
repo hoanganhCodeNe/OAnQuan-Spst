@@ -282,9 +282,19 @@ export const setupGameSockets = (io: Server) => {
       if (isHost) {
         match.state.winnerId = room.guest?.id || null;
         match.state.winnerName = room.guest?.name || null;
+        // Winner (Guest / Player 2) automatically gets 50 points, Loser (Host / Player 1) gets 0
+        match.state.player2.stonesCaptured = 50;
+        match.state.player2.quizPoints = 0;
+        match.state.player1.stonesCaptured = 0;
+        match.state.player1.quizPoints = 0;
       } else {
         match.state.winnerId = room.host.id;
         match.state.winnerName = room.host.name;
+        // Winner (Host / Player 1) automatically gets 50 points, Loser (Guest / Player 2) gets 0
+        match.state.player1.stonesCaptured = 50;
+        match.state.player1.quizPoints = 0;
+        match.state.player2.stonesCaptured = 0;
+        match.state.player2.quizPoints = 0;
       }
 
       await finalizeMatch(io, upperCode, match, room);
