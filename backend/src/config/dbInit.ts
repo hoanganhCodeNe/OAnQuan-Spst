@@ -6,11 +6,7 @@ export const initializeDatabase = async () => {
   try {
     // Check if 'users' table already exists in the database
     const checkTable = await pool.query(
-      `SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = 'public' 
-        AND table_name = 'users'
-      )`
+      `SELECT to_regclass('public.users') IS NOT NULL AS exists`
     );
     const tableExists = checkTable.rows[0]?.exists;
 
