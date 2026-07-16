@@ -238,6 +238,35 @@ export const setupGameSockets = (io: Server) => {
       });
     });
 
+    // --- SURRENDER (GG) ---
+    socket.on('surrender', async (data: { roomCode: string }) => {
+      const { roomCode } = data;
+      const upperCode = roomCode.trim().toUpperCase();
+      const room = rooms.get(upperCode);
+      const match = activeMatches.get(upperCode);
+
+      if (!room || !match || match.state.status !== 'playing') {
+        return socket.emit('error_message', { message: 'Không thể đầu hàng lúc này.' });
+      }
+
+      const isHost = socket.id === room.host.socketId;
+      const surrenderingPlayerName = isHost ? room.host.name : (room.guest?.name || 'Đối thủ');
+      
+      match.state.status = 'finished';
+      match.state.gameLog.push(`${surrenderingPlayerName} đã đầu hàng (GG). Trận đấu kết thúc.`);
+
+      if (isHost) {
+        match.state.winnerId = room.guest?.id || null;
+        match.state.winnerName = room.guest?.name || null;
+      } else {
+        match.state.winnerId = room.host.id;
+        match.state.winnerName = room.host.name;
+      }
+
+      await finalizeMatch(io, upperCode, match, room);
+      console.log(`Player surrendered in room ${upperCode}. Winner: ${match.state.winnerName}`);
+    });
+
     // --- RECONNECT ---
     socket.on('reconnect_match', (data: { roomCode: string; userId: string }) => {
       const { roomCode, userId } = data;

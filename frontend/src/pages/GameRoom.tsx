@@ -242,6 +242,23 @@ export const GameRoom: React.FC = () => {
     ]);
   };
 
+  // Action: Surrender (GG) in PVP
+  const handleSurrender = () => {
+    if (!socket || !roomCode) return;
+    const confirmGG = window.confirm("Xác nhận đầu hàng (GG)? Bạn sẽ bị tính thua cuộc và lưu kết quả trận đấu.");
+    if (confirmGG) {
+      socket.emit('surrender', { roomCode: roomCode.toUpperCase() });
+    }
+  };
+
+  // Action: Exit game in AI mode
+  const handleExit = () => {
+    const confirmExit = window.confirm("Xác nhận thoát? Trận đấu này sẽ bị hủy bỏ và không lưu kết quả.");
+    if (confirmExit) {
+      navigate('/');
+    }
+  };
+
   if (!roomCode) return null;
 
   // Determine local user key ('player1' or 'player2')
@@ -382,7 +399,7 @@ export const GameRoom: React.FC = () => {
           <div className="flex-grow w-full flex flex-col items-center">
             
             {/* Round info card */}
-            <div className="bg-gradient-to-r from-history-charcoal-light to-history-charcoal-dark border border-history-gold/20 rounded-xl p-4 w-full flex items-center justify-between mb-4 shadow-md font-montserrat">
+            <div className="bg-gradient-to-r from-history-charcoal-light to-history-charcoal-dark border border-history-gold/20 rounded-xl p-4 w-full flex flex-wrap items-center justify-between gap-4 mb-4 shadow-md font-montserrat">
               <div>
                 <span className="text-[10px] text-gray-500 font-bold uppercase block tracking-wider">
                   Chế độ chơi
@@ -392,9 +409,29 @@ export const GameRoom: React.FC = () => {
                 </span>
               </div>
 
-              <div className="text-center bg-black/45 border border-history-gold/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
-                <span className="text-xs font-bold text-history-gold-bright uppercase tracking-wider">Mã phòng:</span>
-                <span className="font-mono text-sm font-black text-history-gold-bright">{roomCode.toUpperCase()}</span>
+              <div className="flex items-center gap-3">
+                <div className="text-center bg-black/45 border border-history-gold/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-history-gold-bright uppercase tracking-wider">Mã phòng:</span>
+                  <span className="font-mono text-sm font-black text-history-gold-bright">{roomCode.toUpperCase()}</span>
+                </div>
+                
+                {gameState.status === 'playing' && (
+                  isPvp ? (
+                    <button
+                      onClick={handleSurrender}
+                      className="px-4 py-1.5 border border-red-600/40 hover:border-red-500 bg-red-950/20 hover:bg-red-900/30 text-red-400 hover:text-red-300 text-xs font-bold uppercase rounded transition-all transform active:scale-95 flex items-center gap-1 font-montserrat"
+                    >
+                      🏳️ Đầu hàng (GG)
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleExit}
+                      className="px-4 py-1.5 border border-gray-600/40 hover:border-gray-500 bg-gray-950/20 hover:bg-gray-800/30 text-gray-400 hover:text-gray-300 text-xs font-bold uppercase rounded transition-all transform active:scale-95 flex items-center gap-1 font-montserrat"
+                    >
+                      🚪 Thoát trận
+                    </button>
+                  )
+                )}
               </div>
             </div>
 

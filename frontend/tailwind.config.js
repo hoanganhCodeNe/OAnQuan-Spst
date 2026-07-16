@@ -34,7 +34,7 @@ export default {
         }
       },
       fontFamily: {
-        cinzel: ['Cinzel', 'serif'],
+        cinzel: ['Playfair Display', 'serif'],
         montserrat: ['Montserrat', 'sans-serif'],
       },
       boxShadow: {
