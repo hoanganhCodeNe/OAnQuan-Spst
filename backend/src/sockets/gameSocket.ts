@@ -331,8 +331,26 @@ export const setupGameSockets = (io: Server) => {
         const room = rooms.get(roomCode);
         
         if (room) {
+          const isHost = socket.id === room.host.socketId;
+          const isGuest = room.guest && socket.id === room.guest.socketId;
+
+          // If the game has not started yet (waiting in lobby), clean up immediately
+          if (room.status === 'waiting') {
+            if (isHost) {
+              io.to(roomCode).emit('room_dissolved', { message: 'Chủ phòng đã thoát. Sảnh chờ bị hủy.' });
+              rooms.delete(roomCode);
+              console.log(`Waiting room dissolved immediately due to host disconnect: ${roomCode}`);
+            } else if (isGuest) {
+              room.guest = undefined;
+              io.to(roomCode).emit('room_joined', { roomCode, room });
+              console.log(`Guest removed from waiting room immediately due to disconnect: ${roomCode}`);
+            }
+            playerSocketMap.delete(socket.id);
+            return;
+          }
+
+          // If game is active (playing), standard 60s reconnection timeout
           const playerName = room.host.id === playerId ? room.host.name : room.guest?.name || 'Đối thủ';
-          
           io.to(roomCode).emit('player_disconnected', { playerId, message: `${playerName} bị mất kết nối.` });
           io.to(roomCode).emit('chat_received', {
             sender: 'Hệ thống',
@@ -340,25 +358,20 @@ export const setupGameSockets = (io: Server) => {
             timestamp: Date.now()
           });
 
-          // Schedule room cleanup if PVP and both disconnect, or clean up after a timeout
-          // To keep it simple, we leave the match active for 60s, then clean up if not reconnected.
           setTimeout(() => {
             const currentRoom = rooms.get(roomCode);
             if (currentRoom) {
               const hostDisconnected = currentRoom.host.socketId === socket.id;
               const guestDisconnected = currentRoom.guest?.socketId === socket.id;
 
-              // Check if they are still disconnected (socketId didn't change)
               if ((hostDisconnected && currentRoom.host.socketId === socket.id) || 
                   (guestDisconnected && currentRoom.guest?.socketId === socket.id)) {
                 
-                // If it was playing, save as finished due to disconnect forfeit
                 const activeMatch = activeMatches.get(roomCode);
                 if (activeMatch && activeMatch.state.status === 'playing') {
                   activeMatch.state.status = 'finished';
                   activeMatch.state.gameLog.push(`${playerName} rời trận đấu quá lâu. Trận đấu kết thúc do bỏ cuộc.`);
                   
-                  // Award win to the other player
                   if (currentRoom.host.id === playerId) {
                     activeMatch.state.winnerId = currentRoom.guest?.id || null;
                     activeMatch.state.winnerName = currentRoom.guest?.name || null;

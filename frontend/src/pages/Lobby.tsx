@@ -50,7 +50,7 @@ export const Lobby: React.FC = () => {
   }, [socket, navigate]);
 
   const handleCreateRoom = () => {
-    if (isGuest) {
+    if (isGuest && import.meta.env.PROD) {
       return setError('Tính năng Chơi với bạn bè yêu cầu đăng ký/đăng nhập tài khoản để kết nối trực tuyến!');
     }
     if (!socket || !isConnected) {
@@ -63,7 +63,7 @@ export const Lobby: React.FC = () => {
 
   const handleJoinRoom = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isGuest) {
+    if (isGuest && import.meta.env.PROD) {
       return setError('Tính năng Chơi với bạn bè yêu cầu đăng ký/đăng nhập tài khoản để kết nối trực tuyến!');
     }
     if (!roomCodeInput.trim()) {
