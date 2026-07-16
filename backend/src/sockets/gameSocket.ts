@@ -102,9 +102,21 @@ export const setupGameSockets = (io: Server) => {
       const isHost = socket.id === room.host.socketId;
 
       if (isHost) {
-        io.to(upperCode).emit('room_dissolved', { message: 'Chủ phòng đã hủy sảnh chờ.' });
-        rooms.delete(upperCode);
-        console.log(`Room dissolved: ${upperCode} by Host`);
+        if (room.guest) {
+          // Promote Guest to Host
+          room.host = {
+            id: room.guest.id,
+            name: room.guest.name,
+            socketId: room.guest.socketId
+          };
+          room.guest = undefined;
+          io.to(upperCode).emit('room_joined', { roomCode: upperCode, room });
+          console.log(`Host left. Promoted Guest ${room.host.name} to Host in room ${upperCode}`);
+        } else {
+          // No guest, dissolve room
+          rooms.delete(upperCode);
+          console.log(`Room dissolved: ${upperCode} by Host (no guest)`);
+        }
       } else {
         room.guest = undefined;
         io.to(upperCode).emit('room_joined', { roomCode: upperCode, room });
@@ -347,9 +359,20 @@ export const setupGameSockets = (io: Server) => {
           // If the game has not started yet (waiting in lobby), clean up immediately
           if (room.status === 'waiting') {
             if (isHost) {
-              io.to(roomCode).emit('room_dissolved', { message: 'Chủ phòng đã thoát. Sảnh chờ bị hủy.' });
-              rooms.delete(roomCode);
-              console.log(`Waiting room dissolved immediately due to host disconnect: ${roomCode}`);
+              if (room.guest) {
+                // Promote Guest to Host
+                room.host = {
+                  id: room.guest.id,
+                  name: room.guest.name,
+                  socketId: room.guest.socketId
+                };
+                room.guest = undefined;
+                io.to(roomCode).emit('room_joined', { roomCode, room });
+                console.log(`Host disconnected. Promoted Guest ${room.host.name} to Host in room ${roomCode}`);
+              } else {
+                rooms.delete(roomCode);
+                console.log(`Waiting room dissolved immediately due to host disconnect: ${roomCode}`);
+              }
             } else if (isGuest) {
               room.guest = undefined;
               io.to(roomCode).emit('room_joined', { roomCode, room });

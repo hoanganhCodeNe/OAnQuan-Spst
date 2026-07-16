@@ -265,17 +265,16 @@ export const GameRoom: React.FC = () => {
       navigate('/');
     }
   };
-
   // Action: Leave waiting room lobby
   const handleLeaveRoom = () => {
-    if (!socket || !roomCode) return;
     const confirmLeave = window.confirm("Bạn có chắc chắn muốn rời sảnh chờ?");
     if (confirmLeave) {
-      socket.emit('leave_room', { roomCode: roomCode.toUpperCase() });
+      if (socket && roomCode) {
+        socket.emit('leave_room', { roomCode: roomCode.toUpperCase() });
+      }
       navigate('/');
     }
   };
-
   if (!roomCode) return null;
 
   // Determine local user key ('player1' or 'player2')
