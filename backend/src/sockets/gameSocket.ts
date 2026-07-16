@@ -437,11 +437,11 @@ const getWrongOption = (correct: string): string => {
 const finalizeMatch = async (io: Server, roomCode: string, match: MatchEngine, room: Room) => {
   console.log(`Finalizing match for room ${roomCode}`);
   
-  // Save match in DB asynchronously
+  // Save match in DB in the background (do not await to prevent blocking game finalization)
   const isPvp = room.mode === 'pvp';
   const player2Id = isPvp ? (room.guest?.id || null) : '00000000-0000-0000-0000-000000000000';
 
-  await saveMatchResult({
+  saveMatchResult({
     player1Id: room.host.id,
     player2Id,
     player1Name: room.host.name,
@@ -451,9 +451,11 @@ const finalizeMatch = async (io: Server, roomCode: string, match: MatchEngine, r
     mode: room.mode,
     p1Score: match.state.player1.stonesCaptured + match.state.player1.quizPoints,
     p2Score: match.state.player2.stonesCaptured + match.state.player2.quizPoints,
+  }).catch((err) => {
+    console.error('Error saving match result in background:', err);
   });
 
-  // Notify clients match finished
+  // Notify clients match finished immediately
   io.to(roomCode).emit('match_finished', {
     winnerId: match.state.winnerId,
     winnerName: match.state.winnerName,

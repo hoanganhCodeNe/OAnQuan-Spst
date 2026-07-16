@@ -176,14 +176,14 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
           
           {/* LEFT MANDARIN (Hole 11) */}
           <div className="col-span-1 row-span-2 bg-gradient-to-br from-black/55 to-black/25 rounded-l-full border border-history-gold/30 flex flex-col justify-between items-center py-4 relative shadow-inner overflow-hidden">
-            <span className="text-[10px] sm:text-xs text-history-gold-light uppercase font-bold tracking-wide font-cinzel text-center px-1">
+            <span className="text-[10px] sm:text-xs text-history-gold-light uppercase font-bold tracking-wide font-cinzel text-center px-1 mt-2 sm:mt-3">
               Quan Trái
             </span>
             {renderPebbles(board[11].stones, true, 11)}
             <div className="bg-history-gold-dark/20 border border-history-gold-light/30 px-2 py-0.5 rounded text-xs font-bold text-history-gold-bright relative z-20">
               {board[11].stones}
             </div>
-            <div className="absolute top-1/2 left-2 text-[9px] text-gray-500 pointer-events-none uppercase tracking-wider origin-center -rotate-90 translate-y-[-50%] line-clamp-1 max-w-[80px]">
+            <div className="absolute top-1/2 left-2 text-[9px] text-gray-500 pointer-events-none uppercase tracking-wider origin-center -rotate-90 translate-y-[-50%] line-clamp-1 max-w-[140px]">
               {chapterTitles[11]}
             </div>
           </div>
@@ -192,7 +192,7 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
           <div className="col-span-5 grid grid-rows-2 gap-2 sm:gap-3.5 h-full">
             
             {/* ROW 1: Player 2 (Top side, indices 9, 8, 7, 6, 5 from left to right) */}
-            <div className="grid grid-cols-5 gap-2 sm:gap-3.5">
+            <div className="grid grid-cols-5 gap-2 sm:gap-3.5 h-full">
               {[9, 8, 7, 6, 5].map((index) => {
                 const isInteractable = isHoleInteractable(index);
                 const isSelected = selectedHole === index;
@@ -201,7 +201,7 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
                   <div
                     key={index}
                     onClick={() => handleHoleClick(index)}
-                    className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 relative shadow-inner transition-all duration-300 overflow-hidden ${
+                    className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 shadow-inner transition-all duration-300 overflow-hidden h-full ${
                       isInteractable 
                         ? 'border-history-gold/60 cursor-pointer hover:bg-history-gold/20 hover:shadow-gold-glow hover:scale-105 shadow-md shadow-history-gold/10' 
                         : 'border-history-gold/15'
@@ -254,7 +254,7 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
             </div>
 
             {/* ROW 2: Player 1 (Bottom side, indices 0, 1, 2, 3, 4 from left to right) */}
-            <div className="grid grid-cols-5 gap-2 sm:gap-3.5">
+            <div className="grid grid-cols-5 gap-2 sm:gap-3.5 h-full">
               {[0, 1, 2, 3, 4].map((index) => {
                 const isInteractable = isHoleInteractable(index);
                 const isSelected = selectedHole === index;
@@ -263,7 +263,7 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
                   <div
                     key={index}
                     onClick={() => handleHoleClick(index)}
-                    className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 relative shadow-inner transition-all duration-300 overflow-hidden ${
+                    className={`relative bg-black/45 rounded-xl border flex flex-col justify-between items-center py-2 shadow-inner transition-all duration-300 overflow-hidden h-full ${
                       isInteractable 
                         ? 'border-history-gold/60 cursor-pointer hover:bg-history-gold/20 hover:shadow-gold-glow hover:scale-105 shadow-md shadow-history-gold/10' 
                         : 'border-history-gold/15'
@@ -319,14 +319,14 @@ export const MancalaBoard: React.FC<MancalaBoardProps> = ({
 
           {/* RIGHT MANDARIN (Hole 10) */}
           <div className="col-span-1 row-span-2 bg-gradient-to-bl from-black/55 to-black/25 rounded-r-full border border-history-gold/30 flex flex-col justify-between items-center py-4 relative shadow-inner overflow-hidden">
-            <span className="text-[10px] sm:text-xs text-history-gold-light uppercase font-bold tracking-wide font-cinzel text-center px-1">
+            <span className="text-[10px] sm:text-xs text-history-gold-light uppercase font-bold tracking-wide font-cinzel text-center px-1 mt-2 sm:mt-3">
               Quan Phải
             </span>
             {renderPebbles(board[10].stones, true, 10)}
             <div className="bg-history-gold-dark/20 border border-history-gold-light/30 px-2 py-0.5 rounded text-xs font-bold text-history-gold-bright relative z-20">
               {board[10].stones}
             </div>
-            <div className="absolute top-1/2 right-2 text-[9px] text-gray-500 pointer-events-none uppercase tracking-wider origin-center rotate-90 translate-y-[-50%] line-clamp-1 max-w-[80px]">
+            <div className="absolute top-1/2 right-2 text-[9px] text-gray-500 pointer-events-none uppercase tracking-wider origin-center rotate-90 translate-y-[-50%] line-clamp-1 max-w-[140px]">
               {chapterTitles[10]}
             </div>
           </div>

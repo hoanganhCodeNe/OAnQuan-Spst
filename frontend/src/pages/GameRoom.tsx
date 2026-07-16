@@ -228,7 +228,6 @@ export const GameRoom: React.FC = () => {
     if (!socket || !roomCode) return;
     socket.emit('submit_answer', { roomCode: roomCode.toUpperCase(), answer });
   };
-
   // Action: Chat Send Message
   const handleSendMessage = (message: string) => {
     if (!socket || !roomCode || !user) return;
@@ -237,17 +236,7 @@ export const GameRoom: React.FC = () => {
       message,
       senderName: user.name,
     });
-    // Add locally immediately for real-time responsiveness
-    setChatMessages((prev) => [
-      ...prev,
-      {
-        sender: user.name,
-        message,
-        timestamp: Date.now(),
-      },
-    ]);
   };
-
   // Action: Surrender (GG) in PVP
   const handleSurrender = () => {
     if (!socket || !roomCode) return;
