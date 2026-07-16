@@ -91,6 +91,30 @@ export const setupGameSockets = (io: Server) => {
       console.log(`Player ${userName} joined room: ${upperCode}`);
     });
 
+    // --- LEAVE ROOM (IN WAITING LOBBY) ---
+    socket.on('leave_room', (data: { roomCode: string }) => {
+      const { roomCode } = data;
+      const upperCode = roomCode.trim().toUpperCase();
+      const room = rooms.get(upperCode);
+
+      if (!room) return;
+
+      const isHost = socket.id === room.host.socketId;
+
+      if (isHost) {
+        io.to(upperCode).emit('room_dissolved', { message: 'Chủ phòng đã hủy sảnh chờ.' });
+        rooms.delete(upperCode);
+        console.log(`Room dissolved: ${upperCode} by Host`);
+      } else {
+        room.guest = undefined;
+        io.to(upperCode).emit('room_joined', { roomCode: upperCode, room });
+        console.log(`Guest left room: ${upperCode}`);
+      }
+
+      socket.leave(upperCode);
+      playerSocketMap.delete(socket.id);
+    });
+
     // --- CREATE VS AI ROOM ---
     socket.on('create_ai_room', async (data: { mode: 'ai_easy' | 'ai_medium' | 'ai_hard'; userId: string; userName: string }) => {
       const { mode, userId, userName } = data;

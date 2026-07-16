@@ -175,6 +175,11 @@ export const GameRoom: React.FC = () => {
       ]);
     });
 
+    socket.on('room_dissolved', (data: { message: string }) => {
+      alert(data.message);
+      navigate('/');
+    });
+
     // Handle connection failures redirect
     socket.on('reconnect_failed', () => {
       navigate('/');
@@ -192,6 +197,7 @@ export const GameRoom: React.FC = () => {
       socket.off('reconnect_success');
       socket.off('match_finished');
       socket.off('player_disconnected');
+      socket.off('room_dissolved');
       socket.off('reconnect_failed');
       socket.off('error_message');
     };
@@ -255,6 +261,16 @@ export const GameRoom: React.FC = () => {
   const handleExit = () => {
     const confirmExit = window.confirm("Xác nhận thoát? Trận đấu này sẽ bị hủy bỏ và không lưu kết quả.");
     if (confirmExit) {
+      navigate('/');
+    }
+  };
+
+  // Action: Leave waiting room lobby
+  const handleLeaveRoom = () => {
+    if (!socket || !roomCode) return;
+    const confirmLeave = window.confirm("Bạn có chắc chắn muốn rời sảnh chờ?");
+    if (confirmLeave) {
+      socket.emit('leave_room', { roomCode: roomCode.toUpperCase() });
       navigate('/');
     }
   };
@@ -356,6 +372,14 @@ export const GameRoom: React.FC = () => {
               🔔 Thách đấu đã tham gia phòng. Đang đợi chủ phòng khai cuộc trận đấu...
             </div>
           )}
+
+          {/* Leave waiting room button */}
+          <button
+            onClick={handleLeaveRoom}
+            className="mt-4 px-6 py-2.5 border border-red-900/30 hover:border-red-600 bg-red-950/20 hover:bg-red-950/40 text-red-400 hover:text-red-300 rounded font-montserrat font-bold text-xs uppercase transition-all tracking-wider flex items-center justify-center gap-1.5 mx-auto"
+          >
+            🚪 Rời Sảnh Chờ
+          </button>
         </div>
       </motion.div>
     );
