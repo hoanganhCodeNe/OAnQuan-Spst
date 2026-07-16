@@ -32,7 +32,7 @@ export const Lobby: React.FC = () => {
       navigate(`/game/${data.roomCode}`);
     });
 
-    socket.on('room_joined', (data: { roomCode: string }) => {
+    socket.on('join_room_success', (data: { roomCode: string }) => {
       setLoading(false);
       navigate(`/game/${data.roomCode}`);
     });
@@ -44,7 +44,7 @@ export const Lobby: React.FC = () => {
 
     return () => {
       socket.off('room_created');
-      socket.off('room_joined');
+      socket.off('join_room_success');
       socket.off('error_message');
     };
   }, [socket, navigate]);

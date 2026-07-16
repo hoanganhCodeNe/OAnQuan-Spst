@@ -88,6 +88,7 @@ export const setupGameSockets = (io: Server) => {
       socket.join(upperCode);
 
       io.to(upperCode).emit('room_joined', { roomCode: upperCode, room });
+      socket.emit('join_room_success', { roomCode: upperCode });
       console.log(`Player ${userName} joined room: ${upperCode}`);
     });
 
