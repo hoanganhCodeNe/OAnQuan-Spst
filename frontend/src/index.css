@@ -31,7 +31,7 @@
 }
 
 .gold-gradient-text {
-  @apply bg-gradient-to-r from-history-gold-light via-history-gold-bright to-history-gold-dark bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-history-gold-light via-history-gold-bright to-history-gold-dark bg-clip-text text-transparent py-1.5;
 }
 
 .gold-btn {
