@@ -9,7 +9,6 @@ import { GameRoom } from './pages/GameRoom';
 import { Profile } from './pages/Profile';
 import { Leaderboards } from './pages/Leaderboards';
 import { StudyDocs } from './pages/StudyDocs';
-
 // Protected Route Wrapper: requires authentication and wraps pages with SocketProvider
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { token, loading } = useAuth();
